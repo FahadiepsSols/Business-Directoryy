@@ -1,87 +1,79 @@
-import { useRouter } from "next/router";
+"use client";
+
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 interface Business {
-  _id: string;
+  id: string;
   name: string;
-  category: string;
-  location: string;
   description: string;
+  address: string;
   contact: string;
   image: string;
+  reviews: { user: string; text: string }[];
 }
 
 export default function BusinessProfile() {
-  const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams();
   const [business, setBusiness] = useState<Business | null>(null);
-  const [review, setReview] = useState("");
-  const [reviews, setReviews] = useState<string[]>([]);
+  const [reviewText, setReviewText] = useState("");
 
   useEffect(() => {
-    if (id) {
-      fetch(`http://localhost:5000/api/businesses/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setBusiness(data);
-          setReviews(data.reviews || []);
-        });
-    }
+    fetch(`http://localhost:5000/api/businesses/${id}`)
+      .then((res) => res.json())
+      .then((data) => setBusiness(data))
+      .catch((err) => console.error("Error fetching business:", err));
   }, [id]);
 
-  const handleReviewSubmit = async () => {
-    if (review.trim() === "") return;
+  const submitReview = async () => {
+    if (!reviewText.trim()) return;
+    
+    const newReview = { user: "Anonymous", text: reviewText };
+    setBusiness((prev) => prev ? { ...prev, reviews: [...prev.reviews, newReview] } : prev);
 
-    const newReviews = [...reviews, review];
-    setReviews(newReviews);
-    setReview("");
-
-    await fetch(`/api/businesses/${id}/reviews`, {
+    await fetch(`http://localhost:5000/api/businesses/${id}/reviews`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ review }),
+      body: JSON.stringify(newReview),
     });
+
+    setReviewText("");
   };
 
-  if (!business) return <p className="text-center mt-6">Loading...</p>;
+  if (!business) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="container mx-auto p-6">
-      <img
-        src={business.image}
-        alt={business.name}
-        className="w-full h-64 object-cover rounded-md"
-      />
+    <div className="max-w-4xl mx-auto p-6">
+      <img src={business.image} alt={business.name} className="w-full h-60 object-cover rounded-lg" />
       <h1 className="text-3xl font-bold mt-4">{business.name}</h1>
-      <p className="text-gray-600">{business.category}</p>
-      <p className="text-gray-500">{business.location}</p>
-      <p className="mt-3">{business.description}</p>
-      <p className="mt-3 font-semibold">Contact: {business.contact}</p>
+      <p className="text-gray-700">{business.description}</p>
+      <p className="mt-2"><strong>Address:</strong> {business.address}</p>
+      <p><strong>Contact:</strong> {business.contact}</p>
 
-      {/* Reviews Section */}
       <div className="mt-6">
         <h2 className="text-2xl font-semibold">Reviews</h2>
         <ul className="mt-2">
-          {reviews.map((r, index) => (
-            <li key={index} className="bg-gray-100 p-2 rounded-md mt-2">
-              {r}
+          {business.reviews.length > 0 ? business.reviews.map((review, index) => (
+            <li key={index} className="p-2 border rounded mt-2">
+              <strong>{review.user}:</strong> {review.text}
             </li>
-          ))}
+          )) : <p>No reviews yet.</p>}
         </ul>
-        <div className="mt-4">
-          <textarea
-            className="w-full border p-2 rounded-md"
-            placeholder="Write a review..."
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
-          />
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-md mt-2"
-            onClick={handleReviewSubmit}
-          >
-            Submit Review
-          </button>
-        </div>
+      </div>
+
+      <div className="mt-4">
+        <textarea
+          className="w-full p-2 border rounded"
+          placeholder="Write a review..."
+          value={reviewText}
+          onChange={(e) => setReviewText(e.target.value)}
+        />
+        <button
+          onClick={submitReview}
+          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Submit Review
+        </button>
       </div>
     </div>
   );
