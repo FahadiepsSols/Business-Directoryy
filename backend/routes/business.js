@@ -1,31 +1,59 @@
-const express = require("express");
+const express = require("express")
+const multer = require("multer")
+const Business = require("../models/Business")
+
 const router = express.Router();
+const upload = multer({ dest: "uploads/" }); // Adjust storage as needed
 
-const businesses = [
-  { id: "1", name: "Coffee House", description: "Best coffee in town!", address: "123 Main St", contact: "9876543210", image: "/images/business1.jpg", reviews: [] },
-  { id: "2", name: "Tech Store", description: "Latest gadgets available", address: "456 Tech St", contact: "9876543211", image: "/images/business2.jpg", reviews: [] },
-];
+// Create a new business
+router.post("/", upload.single("image"), async (req, res) => {
+  try {
+    const { name, category, location, description, contactInfo } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-// Get all businesses
-router.get("/", (req, res) => {
-  res.json(businesses);
+    const newBusiness = new Business({
+      name,
+      category,
+      location,
+      description,
+      contactInfo,
+      imageUrl,
+    });
+
+    await newBusiness.save();
+    res.status(201).json(newBusiness);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create business" });
+  }
 });
 
-// Get business by ID
-router.get("/:id", (req, res) => {
-  const business = businesses.find((b) => b.id === req.params.id);
-  if (!business) return res.status(404).json({ error: "Business not found" });
-  res.json(business);
+router.get("/", async (req, res) => {
+  try {
+    const businesses = await Business.find();
+    console.log("Fetched Businesses:", businesses); // Debug log
+    res.json(businesses);
+  } catch (error) {
+    console.error("Error fetching businesses:", error); // Debug log
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
 });
 
-// Add a review
-router.post("/:id/reviews", (req, res) => {
-  const business = businesses.find((b) => b.id === req.params.id);
-  if (!business) return res.status(404).json({ error: "Business not found" });
+// Get a single business by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const business = await Business.findById(id);
 
-  const { text } = req.body;
-  business.reviews.push({ user: "Anonymous", text });
-  res.status(201).json({ message: "Review added", business });
+    if (!business) {
+      return res.status(404).json({ error: "Business not found" });
+    }
+
+    res.json(business);
+  } catch (error) {
+    console.error("Error fetching business:", error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
+
 
 module.exports = router;

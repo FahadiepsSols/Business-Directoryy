@@ -1,9 +1,9 @@
 'use client'
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
+import Header from "./components/header";
 interface Business {
-  id: string;
+  _id: string;
   name: string;
   category: string;
   location: string;
@@ -22,11 +22,14 @@ export default function Home() {
   }, []);
 
   return (
+    <>
+    <Header/>
+
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Business Directory</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Business Available Near You</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {businesses.map((business) => (
-          <div key={business.id} className="bg-white shadow-md rounded-lg p-4">
+          <div key={business._id} className="bg-white shadow-md rounded-lg p-4">
             <img
               src={business.image}
               alt={business.name}
@@ -35,7 +38,7 @@ export default function Home() {
             <h2 className="text-xl font-semibold mt-2">{business.name}</h2>
             <p className="text-gray-600">{business.category}</p>
             <p className="text-gray-500">{business.location}</p>
-            <Link href={`/business/${business.id}`}>
+            <Link href={`/business/${business._id}`}>
               <button className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-md">
                 View Details
               </button>
@@ -44,5 +47,6 @@ export default function Home() {
         ))}
       </div>
     </div>
+    </>
   );
 }
