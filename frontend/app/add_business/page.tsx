@@ -15,7 +15,7 @@ export default function AddBusiness() {
     image: "", // base64 image string
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -57,7 +57,23 @@ export default function AddBusiness() {
       <h2 className="text-xl font-semibold mb-4">Add Your Business</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="text" name="name" placeholder="Business Name" onChange={handleChange} required className="w-full p-2 border rounded-md" />
-        <input type="text" name="category" placeholder="Category" onChange={handleChange} required className="w-full p-2 border rounded-md" />
+        {/* <input type="text" name="category" placeholder="Category" onChange={handleChange} required className="w-full p-2 border rounded-md" /> */}
+        <select
+          name="category"
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded-md bg-white"
+        >
+  <option value="" disabled selected>Select Category</option>
+  <option value="Raw Food">Raw Food</option>
+  <option value="DTF Printing">DTF Printing</option>
+  <option value="Sports">Sports</option>
+  <option value="cafe">cafe</option>
+  <option value="Accessories">Accessories</option>
+  <option value="Raw Vegetables and Spices">Raw Vegetables and Spices</option>
+</select>
+
+        
         <input type="text" name="location" placeholder="Location" onChange={handleChange} required className="w-full p-2 border rounded-md" />
         <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full p-2 border rounded-md" />
         <input type="text" name="contactInfo" placeholder="Contact Info" onChange={handleChange} required className="w-full p-2 border rounded-md" />

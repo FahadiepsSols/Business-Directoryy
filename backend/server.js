@@ -5,16 +5,16 @@ const businessesRouter = require("./routes/business");
 require('dotenv').config();
 const app = express();
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Routes
+
 app.use("/api/businesses", businessesRouter);
 
-// Connect to MongoDB
+
 
 const uri = process.env.MONGO_URI
 

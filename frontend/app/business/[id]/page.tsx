@@ -3,6 +3,7 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Header from '../../components/header';
 
 type Business = {
   _id: string;
@@ -44,6 +45,8 @@ export default function BusinessProfile() {
   if (!business) return <p>No business found.</p>;
 
   return (
+    <>
+    <Header/>
     <div className="max-w-4xl mx-auto p-6">
       <img
         src={business.image}
@@ -74,5 +77,6 @@ export default function BusinessProfile() {
         </ul>
       </div>
     </div>
+    </>
   );
 }
