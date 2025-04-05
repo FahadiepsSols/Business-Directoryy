@@ -9,7 +9,7 @@ type Business = {
   name: string;
   description: string;
   location: string;
-  contact: string;
+  contactInfo: string;
   image: string;
   reviews: { user: string; text: string }[];
 };
@@ -56,7 +56,7 @@ export default function BusinessProfile() {
         <strong>Address:</strong> {business.location}
       </p>
       <p>
-        <strong>Contact:</strong> {business.contact}
+        <strong>Contact:</strong> {business.contactInfo}
       </p>
 
       <div className="mt-6">

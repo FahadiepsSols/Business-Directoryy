@@ -8,7 +8,7 @@ interface Business {
   category: string;
   location: string;
   description: string;
-  contact: string;
+  contactInfo: string;
   image: string;
 }
 

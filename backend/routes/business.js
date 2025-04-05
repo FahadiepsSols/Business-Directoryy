@@ -1,15 +1,19 @@
-const express = require("express")
-const multer = require("multer")
-const Business = require("../models/Business")
+const express = require("express");
+const Business = require("../models/Business");
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" }); // Adjust storage as needed
 
-// Create a new business
-router.post("/", upload.single("image"), async (req, res) => {
+// No need for multer anymore
+router.post("/", async (req, res) => {
   try {
-    const { name, category, location, description, contactInfo } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    const {
+      name,
+      category,
+      location,
+      description,
+      contactInfo,
+      image, // base64 string
+    } = req.body;
 
     const newBusiness = new Business({
       name,
@@ -17,12 +21,13 @@ router.post("/", upload.single("image"), async (req, res) => {
       location,
       description,
       contactInfo,
-      imageUrl,
+      image,
     });
 
     await newBusiness.save();
     res.status(201).json(newBusiness);
   } catch (error) {
+    console.error("Error saving business:", error);
     res.status(500).json({ error: "Failed to create business" });
   }
 });
@@ -30,13 +35,12 @@ router.post("/", upload.single("image"), async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const businesses = await Business.find();
-    console.log("Fetched Businesses:", businesses); // Debug log
     res.json(businesses);
-  } catch (error) {
-    console.error("Error fetching businesses:", error); // Debug log
-    res.status(500).json({ error: "Server error", details: error.message });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch businesses" });
   }
 });
+
 
 // Get a single business by ID
 router.get("/:id", async (req, res) => {

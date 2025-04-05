@@ -2,20 +2,23 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const businessesRouter = require("./routes/business");
-
+require('dotenv').config();
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static("uploads"));
+
 
 // Routes
 app.use("/api/businesses", businessesRouter);
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://fahadiepsSols:CgmUCL5qjvnt2IPf@businessdirectory.q2miz.mongodb.net/businessdirectory", {
+
+const uri = process.env.MONGO_URI
+
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log("MongoDB connected"))

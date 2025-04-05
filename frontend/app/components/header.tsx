@@ -29,9 +29,9 @@ const Header: React.FC = () => {
         </div>
 
         {/* About Button */}
-        <Link href="/about" legacyBehavior>
+        <Link href="/add_business" legacyBehavior>
           <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200">
-            About
+            Add Your Business
           </a>
         </Link>
       </div>
