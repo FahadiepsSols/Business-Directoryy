@@ -8,11 +8,12 @@ import Header from '../../components/header';
 type Business = {
   _id: string;
   name: string;
+  category: string;
   description: string;
   location: string;
   contactInfo: string;
   image: string;
-  reviews: { user: string; text: string }[];
+ // reviews: { user: string; text: string }[];
 };
 
 export default function BusinessProfile() {
@@ -56,13 +57,16 @@ export default function BusinessProfile() {
       <h1 className="text-3xl font-bold mt-4">{business.name}</h1>
       <p className="text-gray-700">{business.description}</p>
       <p className="mt-2">
+        <strong>Category:</strong> {business.category}
+      </p>
+      <p className="mt-2">
         <strong>Address:</strong> {business.location}
       </p>
       <p>
         <strong>Contact:</strong> {business.contactInfo}
       </p>
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h2 className="text-2xl font-semibold">Reviews</h2>
         <ul className="mt-2">
           {business?.reviews?.length > 0 ? (
@@ -75,7 +79,7 @@ export default function BusinessProfile() {
             <p>No reviews yet.</p>
           )}
         </ul>
-      </div>
+      </div> */}
     </div>
     </>
   );

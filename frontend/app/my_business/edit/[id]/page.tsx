@@ -7,8 +7,8 @@ import Header from "../../../components/header";
 export default function EditBusinessPage() {
   const router = useRouter();
 //   const { id } = useParams();
-const params = useParams();
-const id = params.id as string;
+  const params = useParams();
+  const id = params.id as string;
   const [business, setBusiness] = useState<any>(null);
   const [form, setForm] = useState({
     name: "",

@@ -44,6 +44,15 @@ router.get("/my_businesses", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const businesses = await Business.find();
+    res.json(businesses);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const businesses = await Business.find();
@@ -94,6 +103,18 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
+
+
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await Business.findByIdAndDelete(req.params.id);
+    res.json({ message: "Business deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete business" });
+  }
+});
 
 
 
