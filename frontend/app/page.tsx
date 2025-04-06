@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "./components/header";
 import { useSearch } from './context/SearchContext'
 
+
 interface Business {
   _id: string;
   name: string;

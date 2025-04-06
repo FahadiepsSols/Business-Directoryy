@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function AddBusiness() {
   const router = useRouter();
+  const { user } = useUser();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,16 +35,18 @@ export default function AddBusiness() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const payload = { ...formData, userId: user?.id };
+
     try {
       const res = await fetch("http://localhost:5000/api/businesses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
         alert("Business Added Successfully");
-        router.push("/");
+        router.push("/my_business");
       } else {
         const error = await res.json();
         alert("Failed: " + error?.error);

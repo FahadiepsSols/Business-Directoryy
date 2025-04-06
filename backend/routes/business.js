@@ -12,7 +12,8 @@ router.post("/", async (req, res) => {
       location,
       description,
       contactInfo,
-      image, // base64 string
+      image,
+      userId // base64 string
     } = req.body;
 
     const newBusiness = new Business({
@@ -22,6 +23,7 @@ router.post("/", async (req, res) => {
       description,
       contactInfo,
       image,
+      userId
     });
 
     await newBusiness.save();
@@ -29,6 +31,16 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("Error saving business:", error);
     res.status(500).json({ error: "Failed to create business" });
+  }
+});
+
+router.get("/my_businesses", async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const businesses = await Business.find({ userId });
+    res.json(businesses);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -58,6 +70,32 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
+
+
+
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedBusiness = await Business.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedBusiness) {
+      return res.status(404).json({ error: "Business not found" });
+    }
+
+    res.json(updatedBusiness);
+  } catch (err) {
+    console.error("Error updating business:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
 
 
 module.exports = router;
