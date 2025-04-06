@@ -4,7 +4,7 @@ import { useUser } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import Header from '../components/header';
 
-const ADMIN_EMAIL = "fahad.iepssols@gmail.com";
+const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
 interface Business {
   _id: string;
@@ -20,21 +20,31 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
 
   const fetchBusinesses = async () => {
-    const res = await fetch("http://localhost:5000/api/businesses/all");
-    const data = await res.json();
-    setBusinesses(data);
-    setLoading(false);
+    try {
+      const res = await fetch("http://localhost:5000/api/businesses/all");
+      const data = await res.json();
+      setBusinesses(data);
+    } catch (err) {
+      console.error("Error fetching businesses:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (user?.emailAddresses[0]?.emailAddress === ADMIN_EMAIL) {
+    if (user?.primaryEmailAddress?.emailAddress === adminEmail) {
       fetchBusinesses();
     }
   }, [user]);
 
   if (!isLoaded) return <p>Loading...</p>;
 
-  if (user?.emailAddresses[0]?.emailAddress !== ADMIN_EMAIL) {
+  const userEmail = user?.primaryEmailAddress?.emailAddress;
+
+  console.log("Logged-in email:", userEmail);
+  console.log("Admin email from env:", adminEmail);
+
+  if (userEmail !== adminEmail) {
     return (
       <>
         <Header />
@@ -75,9 +85,11 @@ export default function AdminPanel() {
                       onClick={async () => {
                         const confirmDelete = confirm("Are you sure?");
                         if (!confirmDelete) return;
+
                         const res = await fetch(`http://localhost:5000/api/businesses/${biz._id}`, {
                           method: "DELETE",
                         });
+
                         if (res.ok) {
                           alert("Deleted");
                           fetchBusinesses();

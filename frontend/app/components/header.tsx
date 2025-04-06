@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { useSearch } from '../context/SearchContext';
+import Image from 'next/image';
+import logo from '../../public/images/logo.jpg'
 import {
   SignInButton,
   SignedIn,
@@ -22,7 +24,8 @@ const Header: React.FC = () => {
         
         <div className="flex items-center">
           <Link href="/" legacyBehavior>
-            <a className="text-2xl font-bold text-gray-800">MyLogo</a>
+            <a className="text-2xl font-bold text-gray-800"><Image src={logo} alt="LOGO" width={50} height={50} /></a>
+            {/* <Image src={logo} alt="LOGO" /> */}
           </Link>
         </div>
 

@@ -53,6 +53,31 @@ router.get("/all", async (req, res) => {
   }
 });
 
+
+
+router.post('/:id/reviews', async (req, res) => {
+  const { user, text } = req.body;
+
+  try {
+    const updatedBusiness = await Business.findByIdAndUpdate(
+      req.params.id,
+      { $push: { reviews: { user, text } } },
+      { new: true }
+    );
+
+    if (!updatedBusiness) {
+      return res.status(404).json({ message: 'Business not found' });
+    }
+
+    res.status(200).json(updatedBusiness);
+  } catch (err) {
+    console.error("Review POST error:", err);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+});
+
+
+
 router.get("/", async (req, res) => {
   try {
     const businesses = await Business.find();
@@ -115,6 +140,10 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to delete business" });
   }
 });
+
+
+
+
 
 
 

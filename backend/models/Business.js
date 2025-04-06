@@ -7,7 +7,13 @@ const businessSchema = new mongoose.Schema({
   description: { type: String, required: true },
   contactInfo: { type: String, required: true },
   image: { type: String },
-  userId: { type: String, required: true }, 
+  userId: { type: String, required: true },
+  reviews: [
+    {
+      user: String,
+      text: String,
+    },
+  ],
   createdAt: { type: Date, default: Date.now }
 });
 
