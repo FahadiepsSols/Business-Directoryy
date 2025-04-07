@@ -38,7 +38,7 @@ export default function AddBusiness() {
     const payload = { ...formData, userId: user?.id };
 
     try {
-      const res = await fetch("http://localhost:5000/api/businesses", {
+      const res = await fetch("https://business-directoryy.onrender.com/api/businesses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

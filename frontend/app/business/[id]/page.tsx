@@ -120,7 +120,7 @@ export default function BusinessProfile() {
 
   const fetchBusiness = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/businesses/${id}`);
+      const res = await fetch(`https://business-directoryy.onrender.com/api/businesses/${id}`);
       if (!res.ok) throw new Error('Failed to fetch business data');
       const data = await res.json();
       setBusiness(data);
@@ -141,7 +141,7 @@ export default function BusinessProfile() {
 
     try {
       setSubmitting(true);
-      const res = await fetch(`http://localhost:5000/api/businesses/${id}/reviews`, {
+      const res = await fetch(`https://business-directoryy.onrender.com/api/businesses/${id}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

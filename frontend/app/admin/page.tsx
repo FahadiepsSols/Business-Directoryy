@@ -21,7 +21,7 @@ export default function AdminPanel() {
 
   const fetchBusinesses = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/businesses/all");
+      const res = await fetch("https://business-directoryy.onrender.com/api/businesses/all");
       const data = await res.json();
       setBusinesses(data);
     } catch (err) {

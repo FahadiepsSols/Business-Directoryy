@@ -25,7 +25,8 @@ export default function Home() {
 
   // Fetch businesses from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/businesses")
+    // fetch("http://localhost:5000/api/businesses")
+    fetch("https://business-directoryy.onrender.com/api/businesses")
       .then((res) => res.json())
       .then((data) => {
         setBusinesses(data);

@@ -21,7 +21,8 @@ export default function MyBusiness() {
 
   useEffect(() => {
     if (user?.id) {
-        fetch(`http://localhost:5000/api/businesses/my_businesses?userId=${user.id}`)
+        // fetch(`http://localhost:5000/api/businesses/my_businesses?userId=${user.id}`)
+        fetch(`https://business-directoryy.onrender.com/api/businesses/my_businesses?userId=${user.id}`)
         .then((res) => res.json())
         .then((data) => setBusinesses(data))
         .catch((err) => console.error("Error fetching businesses:", err));

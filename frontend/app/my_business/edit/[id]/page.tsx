@@ -21,7 +21,8 @@ export default function EditBusinessPage() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/businesses/${id}`)
+      // fetch(`http://localhost:5000/api/businesses/${id}`)
+      fetch(`https://business-directoryy.onrender.com/api/businesses/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setBusiness(data);
