@@ -86,7 +86,7 @@ export default function AdminPanel() {
                         const confirmDelete = confirm("Are you sure?");
                         if (!confirmDelete) return;
 
-                        const res = await fetch(`http://localhost:5000/api/businesses/${biz._id}`, {
+                        const res = await fetch(`https://business-directoryy.onrender.com/api/businesses/${biz._id}`, {
                           method: "DELETE",
                         });
 
