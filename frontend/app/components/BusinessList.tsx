@@ -89,7 +89,7 @@ export default function BusinessList() {
             if (res.ok) {
               alert("Business followed!");
             } else {
-              alert("Already followed or something went wrong.");
+              alert("Already followed");
             }
           }}
           className="absolute top-2 right-2 text-lg font-bold bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow hover:bg-blue-700"
