@@ -94,15 +94,7 @@ const Header: React.FC = () => {
                 </a>
               </Link>
             )}
-
-            {role === 'customer' || role === 'business-owner' && (
-              <Link href="/following" legacyBehavior>
-                <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
-                  My Wish-List
-                </a>
-              </Link>
-            )}
-
+          
             </SignedIn>
             <SignedOut>
               <button
@@ -113,6 +105,19 @@ const Header: React.FC = () => {
                 My Business
               </button>
             </SignedOut>
+          </div>
+
+
+          <div className="mt-2 md:mt-0">
+          <SignedIn>
+            {role === 'customer' || role === 'business-owner' && (
+              <Link href="/following" legacyBehavior>
+                <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
+                  My Wish-List
+                </a>
+              </Link>
+            )}
+          </SignedIn>
           </div>
 
           
