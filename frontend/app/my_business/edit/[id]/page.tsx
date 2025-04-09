@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Header from "../../../components/header";
+// import Header from "../../../components/header";
 
 export default function EditBusinessPage() {
   const router = useRouter();
@@ -64,7 +64,7 @@ export default function EditBusinessPage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
         <h1 className="text-2xl font-bold mb-4">Edit Business</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

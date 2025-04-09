@@ -1,19 +1,23 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useSearch } from '../context/SearchContext';
 import Image from 'next/image';
-import logo from '../../public/images/logo.jpg'
+import { useSearch } from '../context/SearchContext';
+import logo from '../../public/images/logo.jpg';
+
 import {
   SignInButton,
   SignedIn,
   SignedOut,
-  UserButton
+  UserButton,
+  useUser,
 } from '@clerk/nextjs';
 
 const Header: React.FC = () => {
   const { searchQuery, setSearchQuery } = useSearch();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useUser();
+  const role = user?.unsafeMetadata?.role; // 👈 using unsafeMetadata as discussed
 
   const handleSearch = () => {
     console.log("Searching for:", searchQuery);
@@ -22,26 +26,17 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto flex justify-between items-center p-4 flex-wrap md:flex-nowrap">
-        
         <div className="flex items-center justify-between w-full md:w-auto">
           <Link href="/" legacyBehavior>
             <a className="text-2xl font-bold text-gray-800 flex items-center">
               <Image src={logo} alt="LOGO" width={50} height={50} />
             </a>
           </Link>
-
-          
           <button
             className="md:hidden text-gray-800"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {menuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -51,9 +46,8 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        
         <div className={`w-full md:flex md:items-center md:space-x-4 ${menuOpen ? 'block' : 'hidden'} md:w-auto mt-4 md:mt-0`}>
-          
+          {/* Search Bar */}
           <div className="flex w-full md:w-auto md:flex-grow md:mx-4">
             <input
               type="text"
@@ -70,34 +64,45 @@ const Header: React.FC = () => {
             </button>
           </div>
 
-          
+          {/* Add Your Business */}
           <div className="mt-2 md:mt-0">
-            <SignedIn>
+            {role === 'business-owner' && (
               <Link href="/add_business" legacyBehavior>
                 <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
                   Add Your Business
                 </a>
               </Link>
-            </SignedIn>
+            )}
             <SignedOut>
               <button
                 disabled
                 className="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed block w-full"
-                title="Login to add your business"
+                title="Login as a business owner to add your business"
               >
                 Add Your Business
               </button>
             </SignedOut>
           </div>
 
-          {/* My Business */}
+          
           <div className="mt-2 md:mt-0">
             <SignedIn>
+            {role === 'business-owner' && (
               <Link href="/my_business" legacyBehavior>
                 <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
                   My Business
                 </a>
               </Link>
+            )}
+
+            {role === 'customer' && (
+              <Link href="/following" legacyBehavior>
+                <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
+                  My Wish-List
+                </a>
+              </Link>
+            )}
+
             </SignedIn>
             <SignedOut>
               <button
@@ -110,10 +115,10 @@ const Header: React.FC = () => {
             </SignedOut>
           </div>
 
-          {/* Auth Buttons */}
+          
           <div className="mt-2 md:mt-0">
             <SignedOut>
-              <SignInButton>
+              <SignInButton mode="redirect" forceRedirectUrl="/Authentication">
                 <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200 w-full">
                   Sign In
                 </button>

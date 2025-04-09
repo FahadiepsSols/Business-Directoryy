@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import Header from "../components/header";
+// import Header from "../components/header";
 
 interface Business {
   _id: string;
@@ -33,7 +33,7 @@ export default function MyBusiness() {
 
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">My Businesses</h1>
 

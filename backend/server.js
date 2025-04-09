@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const businessesRouter = require("./routes/business");
+const followingRoutes = require('./routes/following');
 require('dotenv').config();
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api/businesses", businessesRouter);
-
+app.use('/api/following', followingRoutes);
 
 
 const uri = process.env.MONGO_URI
