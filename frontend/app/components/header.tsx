@@ -95,7 +95,7 @@ const Header: React.FC = () => {
               </Link>
             )}
 
-            {role === 'customer' && (
+            {role === 'customer' || role === 'business-owner' && (
               <Link href="/following" legacyBehavior>
                 <a className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-200 block text-center">
                   My Wish-List
