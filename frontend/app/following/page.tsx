@@ -25,6 +25,8 @@ export default function FollowingPage() {
 
   if (!user) return <p className="text-center mt-10">Please sign in to view your followed businesses.</p>;
 
+  if (!businesses) return <p className="text-center mt-10">No Businesses in Your WishList</p>;
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Followed Businesses</h1>

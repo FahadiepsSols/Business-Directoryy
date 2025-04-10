@@ -1,6 +1,6 @@
 'use client';
 
-import { SignUp } from '@clerk/nextjs';
+//import { SignUp } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';

@@ -92,7 +92,7 @@ export default function BusinessList() {
               alert("Already followed");
             }
           }}
-          className="absolute top-2 right-2 text-lg font-bold bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow hover:bg-blue-700"
+          className="absolute top-2 right-2 text-lg font-bold bg-gray-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow hover:bg-blue-700"
         >
           +
         </button>
