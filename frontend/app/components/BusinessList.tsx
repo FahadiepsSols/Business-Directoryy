@@ -125,6 +125,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearch } from '../context/SearchContext';
+import { useUser,SignedIn } from '@clerk/nextjs';
 
 interface Business {
   _id: string;
@@ -141,6 +142,7 @@ export default function BusinessList({ businesses }: { businesses: Business[] })
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [allCategories, setAllCategories] = useState<string[]>([]);
   const { searchQuery } = useSearch();
+  const {user} = useUser();
 
   useEffect(() => {
     const categories = Array.from(new Set(businesses.map((b) => b.category)));
@@ -186,6 +188,34 @@ export default function BusinessList({ businesses }: { businesses: Business[] })
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredBusinesses.map((business) => (
           <div key={business._id} className="bg-white shadow-md rounded-lg p-4 relative">
+
+
+        <SignedIn>
+         <button
+          onClick={async () => {
+            const res = await fetch("https://business-directoryy.onrender.com/api/following", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                userId: user?.id,
+                businessId: business._id
+              })
+            });
+            if (res.ok) {
+              alert("Business followed!");
+            } else {
+              alert("Already followed");
+            }
+          }}
+          className="absolute top-2 right-2 text-lg font-bold bg-gray-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow hover:bg-blue-700"
+        >
+          +
+        </button>
+      </SignedIn>
+
+
+
+
             <img
               src={business.image}
               alt={business.name}
