@@ -107,15 +107,39 @@
 
 // app/page.tsx
 // import Header from './components/header';
-import BusinessListWrapper from './components/BusinessListWrapper';
+// import BusinessListWrapper from './components/BusinessListWrapper';
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <>
+//       {/* <Header /> */}
+//       <BusinessListWrapper />
+//     </>
+//   );
+// }
+
+
+// app/page.tsx
+// import Header from "./components/header";
+import BusinessList from "./components/BusinessList";
+
+export const dynamic = "force-dynamic"; // Ensures fresh data on each load
+
+async function getBusinesses() {
+  const res = await fetch("https://business-directoryy.onrender.com/api/businesses", {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch businesses");
+  return res.json();
+}
+
+export default async function HomePage() {
+  const businesses = await getBusinesses();
+
   return (
     <>
       {/* <Header /> */}
-      <BusinessListWrapper />
+      <BusinessList businesses={businesses} />
     </>
   );
 }
-
-
